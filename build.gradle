@@ -26,8 +26,6 @@ allprojects {
         jcenter()
     }
 }
-project.tasks.getByName("updateReleaseNotes").enabled = false
-project.tasks.getByName("updateReleaseNotesOnGitHub").enabled = false
 
 task clean(type: Delete) {
     delete rootProject.buildDir
