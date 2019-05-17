@@ -4,8 +4,6 @@ shipkit {
     gitHub.readOnlyAuthToken = System.getenv("GH_READ_TOKEN") ?: ""
 
     gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
-
-    releaseNotes.publicationRepository = "https://github.com/DroidsOnRoids/chuck/releases"
 }
 
 allprojects {

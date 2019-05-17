@@ -14,7 +14,7 @@ buildscript {
 }
 
 plugins {
-    id "org.shipkit.java" version "2.2.5"
+    id "org.shipkit.java" version "2.2.0"
 }
 
 allprojects {
@@ -26,6 +26,8 @@ allprojects {
         jcenter()
     }
 }
+project.tasks.getByName("updateReleaseNotes").enabled = false
+project.tasks.getByName("updateReleaseNotesOnGitHub").enabled = false
 
 task clean(type: Delete) {
     delete rootProject.buildDir
