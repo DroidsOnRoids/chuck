@@ -5,7 +5,12 @@ shipkit {
 
     gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
 
-    releaseNotes.publicationRepository = "https://bintray.com/koral/maven/chuck/"
+    team.developers = ['koral--:Karol Wrótniak']
+}
+
+tasks.whenTaskAdded {
+    if (it.name == "updateReleaseNotes" || it.name == "updateReleaseNotesOnGitHub")
+        it.publicationRepository = "https://bintray.com/koral/maven/chuck/"
 }
 
 allprojects {
@@ -20,6 +25,7 @@ allprojects {
                 user = 'koral'
                 name = 'chuck'
                 licenses = ['Apache-2.0']
+                publications = ['maven']
             }
         }
     }

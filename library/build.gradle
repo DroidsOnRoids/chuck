@@ -1,3 +1,9 @@
+plugins {
+    id "org.shipkit.bintray"
+    id "com.github.technoir42.aar-publish" version "1.0.2"
+    id "maven-publish"
+}
+
 apply plugin: 'com.android.library'
 
 android {
@@ -17,4 +23,36 @@ dependencies {
     compile "com.android.support:design:$supportLibVersion"
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.android
+            groupId = 'pl.droidsonroids'
+            artifactId = 'chuck'
+
+            //TODO pass configuration from shipkit whenever possible
+            pom {
+                name = 'Chuck'
+                description = 'Android in-app HTTP inspector'
+                url = 'https://github.com/DroidsOnRoids/chuck'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'jgilfelt'
+                        name = 'Jeff Gilfelt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git@github.com:DroidsOnRoids/chuck.git'
+                    developerConnection = 'scm:git@github.com:DroidsOnRoids/chuck.git'
+                    url = 'https://github.com/DroidsOnRoids/chuck'
+                }
+            }
+        }
+    }
+}
