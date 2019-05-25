@@ -8,13 +8,8 @@ shipkit {
     team.developers = ['koral--:Karol Wrótniak']
 }
 
-tasks.whenTaskAdded {
-    if (it.name == "updateReleaseNotes" || it.name == "updateReleaseNotesOnGitHub")
-        it.publicationRepository = "https://bintray.com/koral/maven/chuck/"
-}
-
 allprojects {
-    plugins.withId("org.shipkit.bintray") {
+    plugins.withId("com.jfrog.bintray") {
 
         bintray {
 
