@@ -3,6 +3,9 @@
 #### 1.1.26
  - 2019-05-26 - no code changes (no commits) - published to [![Bintray](https://img.shields.io/badge/Bintray-1.1.26-green.svg)](https://bintray.com/droidsonroids/maven/chuck/1.1.26)
 
+#### 1.1.26
+ - 2019-05-26 - no code changes (no commits) - published to [![Bintray](https://img.shields.io/badge/Bintray-1.1.26-green.svg)](https://bintray.com/droidsonroids/maven/chuck/1.1.26)
+
 #### 1.1.25
  - 2019-05-26 - no code changes (no commits) - published to [![Bintray](https://img.shields.io/badge/Bintray-1.1.25-green.svg)](https://bintray.com/droidsonroids/maven/chuck/1.1.25)
 
