@@ -17,7 +17,7 @@ allprojects {
 
             pkg {
                 repo = 'maven'
-                user = 'droidsonroids'
+                userOrg = 'droidsonroids'
                 name = 'chuck'
                 licenses = ['Apache-2.0']
                 publications = ['maven']
