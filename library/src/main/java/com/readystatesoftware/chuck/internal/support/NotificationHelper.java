@@ -46,18 +46,22 @@ public class NotificationHelper {
     private final NotificationManager notificationManager;
     private Method setChannelId;
 
-    public static synchronized void clearBuffer() {
-        transactionBuffer.clear();
-        transactionCount = 0;
+    public static void clearBuffer() {
+        synchronized (transactionBuffer) {
+            transactionBuffer.clear();
+            transactionCount = 0;
+        }
     }
 
-    private static synchronized void addToBuffer(HttpTransaction transaction) {
-        if (transaction.getStatus() == HttpTransaction.Status.Requested) {
-            transactionCount++;
-        }
-        transactionBuffer.put(transaction.getId(), transaction);
-        if (transactionBuffer.size() > BUFFER_SIZE) {
-            transactionBuffer.removeAt(0);
+    private static void addToBuffer(HttpTransaction transaction) {
+        synchronized (transactionBuffer) {
+            if (transaction.getStatus() == HttpTransaction.Status.Requested) {
+                transactionCount++;
+            }
+            transactionBuffer.put(transaction.getId(), transaction);
+            if (transactionBuffer.size() > BUFFER_SIZE) {
+                transactionBuffer.removeAt(0);
+            }
         }
     }
 
@@ -74,38 +78,44 @@ public class NotificationHelper {
         }
     }
 
-    public synchronized void show(HttpTransaction transaction) {
-        addToBuffer(transaction);
-        if (!BaseChuckActivity.isInForeground()) {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                    .setContentIntent(PendingIntent.getActivity(context, 0, Chuck.getLaunchIntent(context), 0))
-                    .setLocalOnly(true)
-                    .setSmallIcon(R.drawable.chuck_ic_notification_white_24dp)
-                    .setColor(ContextCompat.getColor(context, R.color.chuck_colorPrimary))
-                    .setContentTitle(context.getString(R.string.chuck_notification_title));
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-            if (setChannelId != null) {
-                try { setChannelId.invoke(builder, CHANNEL_ID); } catch (Exception ignored) {}
-            }
-            int count = 0;
-            for (int i = transactionBuffer.size() - 1; i >= 0; i--) {
-                if (count < BUFFER_SIZE) {
-                    if (count == 0) {
-                        builder.setContentText(transactionBuffer.valueAt(i).getNotificationText());
+    public void show(HttpTransaction transaction) {
+        synchronized (transactionBuffer) {
+            addToBuffer(transaction);
+            if (!BaseChuckActivity.isInForeground()) {
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+                        .setContentIntent(PendingIntent.getActivity(context, 0, Chuck.getLaunchIntent(context), 0))
+                        .setLocalOnly(true)
+                        .setSmallIcon(R.drawable.chuck_ic_notification_white_24dp)
+                        .setColor(ContextCompat.getColor(context, R.color.chuck_colorPrimary))
+                        .setContentTitle(context.getString(R.string.chuck_notification_title));
+                NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+                if (setChannelId != null) {
+                    try {
+                        setChannelId.invoke(builder, CHANNEL_ID);
+                    } catch (Exception ignored) {
                     }
-                    inboxStyle.addLine(transactionBuffer.valueAt(i).getNotificationText());
                 }
-                count++;
+                int count = 0;
+                for (int i = transactionBuffer.size() - 1; i >= 0; i--) {
+                    if (count < BUFFER_SIZE) {
+                        final String notificationText = transactionBuffer.valueAt(i).getNotificationText();
+                        if (count == 0) {
+                            builder.setContentText(notificationText);
+                        }
+                        inboxStyle.addLine(notificationText);
+                    }
+                    count++;
+                }
+                builder.setAutoCancel(true);
+                builder.setStyle(inboxStyle);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    builder.setSubText(String.valueOf(transactionCount));
+                } else {
+                    builder.setNumber(transactionCount);
+                }
+                builder.addAction(getClearAction());
+                notificationManager.notify(NOTIFICATION_ID, builder.build());
             }
-            builder.setAutoCancel(true);
-            builder.setStyle(inboxStyle);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                builder.setSubText(String.valueOf(transactionCount));
-            } else {
-                builder.setNumber(transactionCount);
-            }
-            builder.addAction(getClearAction());
-            notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
     }
 
