@@ -1,10 +1,9 @@
-plugins {
-    id "org.shipkit.bintray"
-    id "com.github.technoir42.aar-publish" version "1.0.2"
-    id "maven-publish"
-}
-
+apply plugin: 'org.shipkit.bintray'
+apply plugin: 'org.shipkit.android-publish'
 apply plugin: 'com.android.library'
+
+description = 'Android in-app HTTP inspector'
+group = 'pl.droidsonroids'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -21,38 +20,4 @@ dependencies {
     compile "com.squareup.okhttp3:okhttp:$okhttp3Version"
     compile 'nl.qbusict:cupboard:2.2.0'
     compile "com.android.support:design:$supportLibVersion"
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.android
-            groupId = 'pl.droidsonroids'
-            artifactId = 'chuck'
-
-            //TODO pass configuration from shipkit whenever possible
-            pom {
-                name = 'Chuck'
-                description = 'Android in-app HTTP inspector'
-                url = 'https://github.com/DroidsOnRoids/chuck'
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'jgilfelt'
-                        name = 'Jeff Gilfelt'
-                    }
-                }
-                scm {
-                    connection = 'scm:git@github.com:DroidsOnRoids/chuck.git'
-                    developerConnection = 'scm:git@github.com:DroidsOnRoids/chuck.git'
-                    url = 'https://github.com/DroidsOnRoids/chuck'
-                }
-            }
-        }
-    }
 }
