@@ -6,6 +6,8 @@ shipkit {
     gitHub.writeAuthToken = System.getenv("GH_WRITE_TOKEN")
 
     team.developers = ['koral--:Karol Wrótniak']
+
+    android.artifactId = 'chuck'
 }
 
 allprojects {
@@ -21,7 +23,6 @@ allprojects {
                 userOrg = 'droidsonroids'
                 name = 'chuck'
                 licenses = ['Apache-2.0']
-                publications = ['maven']
             }
         }
     }

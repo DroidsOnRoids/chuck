@@ -3,19 +3,20 @@
 buildscript {
     repositories {
         google()
+        maven { url 'https://jitpack.io' }
         jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath 'com.github.koral--:shipkit:755e837785d3a18bc4a1438abc18d88d92c86a44'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
-plugins {
-    id "org.shipkit.java" version "2.2.5"
-}
+apply plugin: 'org.shipkit.java'
 
 allprojects {
 
