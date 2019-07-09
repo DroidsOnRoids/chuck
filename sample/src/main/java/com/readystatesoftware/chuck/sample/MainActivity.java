@@ -96,5 +96,6 @@ public class MainActivity extends AppCompatActivity {
         api.deny().enqueue(cb);
         api.cache("Mon").enqueue(cb);
         api.cache(30).enqueue(cb);
+        api.anything().enqueue(cb);
     }
 }

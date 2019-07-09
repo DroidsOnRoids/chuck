@@ -96,5 +96,7 @@ class SampleApiService {
         Call<Void> cache(@Header("If-Modified-Since") String ifModifiedSince);
         @GET("/cache/{seconds}")
         Call<Void> cache(@Path("seconds") int seconds);
+        @GET("/anything")
+        Call<Void> anything();
     }
 }
